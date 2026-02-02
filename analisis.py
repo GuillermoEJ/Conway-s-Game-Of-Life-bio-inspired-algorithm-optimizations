@@ -1,0 +1,214 @@
+import numpy as np
+from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+
+from scipy.stats import wilcoxon
+import numpy as np
+
+# Cargar los resultados de fitness
+
+resultados_ga = np.load("elites_31.npy", allow_pickle=True)
+# Extraer sólo los valores de fitness
+ga = np.array([r['fitness'] for r in resultados_ga])
+
+
+resultados_aco = np.load("truncation.npy", allow_pickle=True)
+aco = np.array([r['fitness'] for r in resultados_aco])
+
+# Asegurarse de que tienen la misma longitud
+assert len(ga) == len(aco), "Los vectores deben tener la misma longitud"
+
+# Aplicar la prueba de Wilcoxon
+statistic, p_value = wilcoxon(ga, aco)
+
+alpha = 0.05
+print(f"Wilcoxon statistic = {statistic}, p-value = {p_value:.5f}")
+
+if p_value < alpha:
+    print("Hay diferencia significativa entre GA y ACO")
+    if np.mean(ga) > np.mean(aco):
+        print("GA es mejor que ACO en promedio")
+    else:
+        print("ACO es mejor que GA en promedio")
+else:
+    print("No hay diferencia significativa entre GA y ACO")
+
+
+import matplotlib.pyplot as plt
+
+plt.boxplot([ga, aco], labels=["GA", "ACO"])
+plt.title("Distribución de fitness GA vs ACO")
+plt.ylabel("Fitness")
+plt.grid(True)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+'''
+def is_better(a,b):
+  return a > b
+
+alpha = 0.05
+
+names = ["a", "b", "c"]
+names_pos = dict(zip(names, range(len(names))))
+a = np.load("fitness_A.npy")
+b = np.load("fitness_B.npy")
+c = np.load("fitness_C.npy")
+
+_, p_value, rankings, pivots = friedman_aligned_ranks_test(a, b)
+
+if p_value < alpha:
+  d = dict(zip(names, pivots))
+  comp, _, _, adpval = shaffer_multitest(d)
+
+  for i, apv in enumerate(adpval):
+    print(comp[i])
+    if apv < alpha:
+      chunks = comp[i].split("vs")
+
+      name_l = chunks[0].strip()
+      name_r = chunks[1].strip()
+
+      if is_better(rankings[names_pos[name_l]], rankings[names_pos[name_r]]):
+        print(f"{name_l} is better than {name_r}")
+      else:
+        print(f"{name_r} is better than {name_l}")
+    else:
+      print(f"not different")
+else:
+  print("all variables are the same")
+
+
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+
+def is_better(a,b):
+  return a > b
+
+alpha = 0.05
+
+names = ["H1", "H2", "H3"]
+names_pos = dict(zip(names, range(len(names))))
+a = np.load("fitness_A.npy")
+b = np.load("fitness_B.npy")
+c = np.load("fitness_C.npy")
+
+_, p_value, rankings, pivots = friedman_aligned_ranks_test(a, b, c)
+
+if p_value < alpha:
+  d = dict(zip(names, pivots))
+  comp, _, _, adpval = shaffer_multitest(d)
+
+  g = nx.Graph()
+  g.add_nodes_from([(n, {"rank": rankings[names_pos[n]]}) for n in names])
+
+  for i, apv in enumerate(adpval):
+    chunks = comp[i].split("vs")
+    name_l = chunks[0].strip()
+    name_r = chunks[1].strip()
+
+    if apv >= alpha:
+      g.add_edge(name_l, name_r)
+else:
+  g = nx.complete_graph(names)
+  nx.set_node_attributes(g, 20, "rank")
+
+pos = nx.kamada_kawai_layout(g, scale=0.5)
+nx.draw_networkx(g, pos=pos, node_size=[r["rank"]*10 for _,r in g.nodes(data=True)], node_color=[r["rank"] for _,r in g.nodes(data=True)], cmap="plasma", with_labels=True, font_color="w")
+sm = plt.cm.ScalarMappable(cmap='inferno', norm=plt.Normalize(vmin=min(rankings), vmax=max(rankings)))
+sm._A = []
+plt.colorbar(sm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
+from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+
+# Cargar los datos
+fitness_A = np.load("fitness_A.npy")
+fitness_B = np.load("fitness_B.npy")
+fitness_C = np.load("fitness_C.npy")
+
+#print(fitness_A.shape)
+#print(fitness_B.shape)
+#print(fitness_C.shape)
+
+#for name in ["A", "B", "C"]:
+#    f = np.load(f"fitness_{name}.npy")
+#    print(f"{name}: shape = {f.shape}, dtype = {f.dtype}")
+
+
+names = ["A", "B", "C"]
+names_pos = dict(zip(names, range(len(names))))
+alpha = 0.05
+
+# Friedman + Shaffer
+_, p_value, rankings, pivots = friedman_aligned_ranks_test(fitness_A, fitness_B, fitness_C)
+
+if p_value < alpha:
+    d = dict(zip(names, pivots))
+    comp, _, _, adpval = shaffer_multitest(d)
+
+    # Crear grafo
+    g = nx.Graph()
+    g.add_nodes_from([(n, {"rank": rankings[names_pos[n]]}) for n in names])
+
+    for i, apv in enumerate(adpval):
+        left, right = map(str.strip, comp[i].split("vs"))
+        if apv >= alpha:
+            g.add_edge(left, right)
+else:
+    g = nx.complete_graph(names)
+    nx.set_node_attributes(g, 20, "rank")
+
+# Dibujar grafo
+pos = nx.kamada_kawai_layout(g, scale=0.5)
+# Extraer rankings
+node_ranks = [r["rank"] for _, r in g.nodes(data=True)]
+
+# Dibujar nodos y obtener el objeto mappable
+nodes = nx.draw_networkx_nodes(
+    g,
+    pos=pos,
+    node_size=[r * 80 for r in node_ranks],
+    node_color=node_ranks,
+    cmap="plasma"
+)
+
+# Dibujar etiquetas
+nx.draw_networkx_labels(g, pos=pos, font_color="white")
+
+# Colorbar vinculada a los nodos
+plt.colorbar(nodes)
+
+plt.title("N vs N: Friedman Rankings with Shaffer Correction")
+plt.axis("off")
+plt.tight_layout()
+plt.show()
+'''
+
