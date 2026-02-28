@@ -1,64 +1,106 @@
-# Game of Life - Optimización con Algoritmos Evolutivos
+# Game of Life - Optimization with Evolutionary Algorithms
 
-Proyecto de optimización del Juego de la Vida de Conway utilizando algoritmos genéticos (GA) y optimización por colonia de hormigas (ACO).
+Conway's Game of Life optimization project using genetic algorithms (GA) and ant colony optimization (ACO) to find optimal initial configurations that maximize evolution duration and maintain stable or cyclic states.
 
-## Estructura del Proyecto
+## Description
 
-```
-GameOfLife/
-├── src/                    # Código fuente
-│   ├── gameoflife.py      # Implementación Game of Life
-│   ├── GA.py              # Algoritmo Genético
-│   └── ACO.py             # Colonia de Hormigas
-├── tests/                  # Pruebas
-│   ├── tests.py
-│   └── statistical_tests/  # STAC (pruebas estadísticas)
-├── analysis/               # Análisis
-│   └── analisis.py
-├── results/                # Datos y resultados
-├── stac/                   # Framework de pruebas
-├── README.md
-├── requirements.txt
-└── setup.py
-```
+This project implements and compares two bio-inspired optimization algorithms:
 
-## Instalación
+- **Genetic Algorithm (GA)**: Population-based search using selection, crossover, and mutation operators to evolve better solutions over generations.
+
+- **Ant Colony Optimization (ACO)**: Metaheuristic inspired by ant foraging behavior, using pheromone trails to guide the search toward promising regions of the solution space.
+
+Both algorithms are designed to find initial Game of Life configurations that exhibit interesting evolutionary behavior.
+
+## Requirements
+
+- Python >= 3.7
+- NumPy >= 1.21.0
+- Matplotlib >= 3.4.0
+- SciPy >= 1.7.0
+- inspyred >= 1.0.1
+- NetworkX >= 2.6
+
+## Installation
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Uso
+Or with setup.py:
 
-### Game of Life Interactivo
 ```bash
-python -m src.gameoflife
+pip install -e .
 ```
 
-### Ejecutar Algoritmo Genético
+## Usage
+
+### Interactive Game of Life
+
+```bash
+python src/gameoflife.py
+```
+
+Allows manual or random grid initialization and real-time visualization.
+
+### Run Genetic Algorithm
+
 ```bash
 python src/GA.py
 ```
 
-### Ejecutar Colonia de Hormigas
+Optimizes initial configurations using genetic algorithm with configurable parameters.
+
+### Run Ant Colony Optimization
+
 ```bash
 python src/ACO.py
 ```
 
-### Análisis de Resultados
+Optimizes initial configurations using ant colony optimization.
+
+### Results Analysis
+
 ```bash
 python analysis/analisis.py
 ```
 
-### Pruebas Estadísticas
+Performs statistical analysis and visualization of optimization results.
+
+### Statistical Tests
+
 ```bash
 python tests/tests.py
 ```
 
-## Autor
+Runs Friedman and Shaffer tests comparing algorithm performance.
 
-Guillermo
+## Configuration
 
-## Licencia
+Edit parameters directly in each module:
+
+- **src/GA.py**: Population size, generations, mutation rate, selection method
+- **src/ACO.py**: Number of ants, pheromone parameters (alpha, beta, rho), evaluation budget
+- **src/gameoflife.py**: Board size, iterations
+
+## Results
+
+The project generates and saves:
+
+- Optimal initial configurations as .npy files
+- Fitness evolution history
+- Best individuals per execution
+- Comparative statistical analysis with visualization
+
+## Contributing
+
+Contributions are welcome! Please ensure:
+
+- Code follows PEP 8 style guidelines
+- Add docstrings to new functions
+- Test your changes before submitting
+- Use meaningful commit messages
+
+## License
 
 MIT
