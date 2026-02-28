@@ -1,10 +1,14 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import numpy as np
-from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+from tests.statistical_tests.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
 
 # Cargar resultados
-ga = [r['fitness'] for r in np.load("elites_GA.npy", allow_pickle=True)]
-aco = [r['fitness'] for r in np.load("elites_ACO.npy", allow_pickle=True)]
-rand = [r['fitness'] for r in np.load("random_31.npy", allow_pickle=True)]
+ga = [r['fitness'] for r in np.load("results/elites_GA.npy", allow_pickle=True)]
+aco = [r['fitness'] for r in np.load("results/elites_ACO.npy", allow_pickle=True)]
+rand = [r['fitness'] for r in np.load("results/random_31.npy", allow_pickle=True)]
 
 # Asegúrate de que todas tengan la misma longitud
 assert len(ga) == len(aco) == len(rand)
@@ -29,7 +33,7 @@ else:
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+from tests.statistical_tests.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
 
 def is_better(a,b):
   return a > b
@@ -38,9 +42,9 @@ alpha = 0.05
 
 names = ["GA", "ACO", "Random"]
 names_pos = dict(zip(names, range(len(names))))
-a = [r['fitness'] for r in np.load("elites_GA.npy", allow_pickle=True)]
-b = [r['fitness'] for r in np.load("elites_ACO.npy", allow_pickle=True)]
-c = [r['fitness'] for r in np.load("random_31.npy", allow_pickle=True)]
+a = [r['fitness'] for r in np.load("results/elites_GA.npy", allow_pickle=True)]
+b = [r['fitness'] for r in np.load("results/elites_ACO.npy", allow_pickle=True)]
+c = [r['fitness'] for r in np.load("results/random_31.npy", allow_pickle=True)]
 
 _, p_value, rankings, pivots = friedman_aligned_ranks_test(a, b, c)
 

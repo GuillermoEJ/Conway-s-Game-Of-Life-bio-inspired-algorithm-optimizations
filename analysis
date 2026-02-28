@@ -1,17 +1,20 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 import numpy as np
-from stac.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
+from tests.statistical_tests.nonparametric_tests import friedman_aligned_ranks_test, shaffer_multitest
 
 from scipy.stats import wilcoxon
-import numpy as np
 
 # Cargar los resultados de fitness
 
-resultados_ga = np.load("elites_31.npy", allow_pickle=True)
+resultados_ga = np.load("results/elites_GA.npy", allow_pickle=True)
 # Extraer sólo los valores de fitness
 ga = np.array([r['fitness'] for r in resultados_ga])
 
 
-resultados_aco = np.load("truncation.npy", allow_pickle=True)
+resultados_aco = np.load("results/elites_ACO.npy", allow_pickle=True)
 aco = np.array([r['fitness'] for r in resultados_aco])
 
 # Asegurarse de que tienen la misma longitud
