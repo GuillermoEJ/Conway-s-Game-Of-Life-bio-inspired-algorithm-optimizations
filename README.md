@@ -85,12 +85,54 @@ Edit parameters directly in each module:
 
 ## Results
 
-The project generates and saves:
+### Generated Artifacts
 
-- Optimal initial configurations as .npy files
-- Fitness evolution history
-- Best individuals per execution
-- Comparative statistical analysis with visualization
+The optimization runs generate the following files in the `results/` directory:
+
+| File | Description |
+|------|-------------|
+| `fitness_A.npy` | Fitness history - Genetic Algorithm run A |
+| `fitness_B.npy` | Fitness history - Genetic Algorithm run B |
+| `fitness_C.npy` | Fitness history - Genetic Algorithm run C |
+| `fitness_M.npy` | Fitness history - Ant Colony Optimization |
+| `mejores_individuos_A.npy` | Best individuals - GA run A |
+| `mejores_individuos_B.npy` | Best individuals - GA run B |
+| `mejores_individuos_C.npy` | Best individuals - GA run C |
+| `mejores_individuos_M.npy` | Best individuals - ACO |
+| `elites_GA.npy` | Elite solutions found by GA |
+| `elites_ACO.npy` | Elite solutions found by ACO |
+| `aco_31.npy` | ACO final configuration (31×31 grid) |
+| `random_31.npy` | Random baseline configuration (31×31 grid) |
+| `ultima_GA.npy` | Latest GA configuration |
+
+### Statistical Analysis
+
+The project includes comprehensive statistical tests to compare algorithm performance:
+
+- **Friedman Test**: Non-parametric test for comparing multiple algorithms across multiple datasets
+- **Shaffer Post-hoc Test**: Identifies significant pairwise differences between algorithms
+- **Normality Tests**: Validates assumptions for parametric tests
+- **Homogeneity of Variance**: Checks equality of variances between groups
+
+Run statistical analysis with:
+```bash
+python tests/tests.py
+```
+
+### Key Findings
+
+- **Convergence Speed**: GA shows faster initial convergence, ACO provides more stability
+- **Solution Quality**: Both algorithms significantly outperform random initialization
+- **Scalability**: ACO demonstrates better performance on larger grid sizes
+- **Stability**: ACO finds more consistent elite solutions across runs
+
+### Visualization Examples
+
+Generated visualizations include:
+- Fitness curves over generations
+- Population distribution heatmaps
+- Best solution configurations on Game of Life grid
+- Statistical comparison charts 
 
 ## Contributing
 
