@@ -2,6 +2,10 @@
 
 Conway's Game of Life optimization project using genetic algorithms (GA) and ant colony optimization (ACO) to find optimal initial configurations that maximize evolution duration and maintain stable or cyclic states.
 
+<img width="400" height="280" alt="Figure_2" src="https://github.com/user-attachments/assets/bc15d5cb-eabd-43f6-9a72-23b1ad887f17" />
+
+>Visualization of high fitness solution for stable pattern
+
 ## Description
 
 This project implements and compares two bio-inspired optimization algorithms:
