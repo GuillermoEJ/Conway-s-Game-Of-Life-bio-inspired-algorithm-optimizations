@@ -89,26 +89,6 @@ Edit parameters directly in each module:
 
 ## Results
 
-### Generated Artifacts
-
-The optimization runs generate the following files in the `results/` directory:
-
-| File | Description |
-|------|-------------|
-| `fitness_A.npy` | Fitness history - Genetic Algorithm run A |
-| `fitness_B.npy` | Fitness history - Genetic Algorithm run B |
-| `fitness_C.npy` | Fitness history - Genetic Algorithm run C |
-| `fitness_M.npy` | Fitness history - Ant Colony Optimization |
-| `mejores_individuos_A.npy` | Best individuals - GA run A |
-| `mejores_individuos_B.npy` | Best individuals - GA run B |
-| `mejores_individuos_C.npy` | Best individuals - GA run C |
-| `mejores_individuos_M.npy` | Best individuals - ACO |
-| `elites_GA.npy` | Elite solutions found by GA |
-| `elites_ACO.npy` | Elite solutions found by ACO |
-| `aco_31.npy` | ACO final configuration (31×31 grid) |
-| `random_31.npy` | Random baseline configuration (31×31 grid) |
-| `ultima_GA.npy` | Latest GA configuration |
-
 ### Statistical Analysis
 
 The project includes comprehensive statistical tests to compare algorithm performance:
